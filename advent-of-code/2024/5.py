@@ -70,7 +70,23 @@ def parse_input_part_two(filename):
                         break
                 if invalid_line_to_fix:
                     # Fix the line and then sum up its middle values
-                    pass
+                    # Is there only one unique corrected ordering? Hope so.
+                    assert len(pages) == len(set(pages)), f"FOUND BAD ROW {pages}"
+                    rules_here = {x:rules[x] for x in pages}
+                    new_pages = []
+                    while len(rules_here) > 0:
+                        precluding_values = []
+                        for y in rules_here.values():
+                            precluding_values.extend(y)
+                        x_added_this_round = []
+                        for x in rules_here.keys():
+                            if x not in precluding_values:
+                                new_pages.append(x)
+                                x_added_this_round.append(x)
+                        for x in x_added_this_round:
+                            del rules_here[x]
+                    # new_pages should be valid now
+                    sum_middle_invalid_lines += new_pages[len(new_pages)//2]
     return sum_middle_invalid_lines
 
 print(f'Sum of middle values in valid lines is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
