@@ -110,8 +110,7 @@ def parse_input_part_two(filename):
     #     while map[cx+dx][cy+dy] == '#':
     #         (dx,dy) = directions[(dx,dy)]
     #     cx,cy=cx+dx,cy+dy # Move
-    #     # Set and count movement
-    #     map[cx][cy] = 'X'
+    # return len(set(possible_new_colliders))
     ##### Exhaustive check
     loop_detector = []
     all_walked_grids = []
@@ -129,18 +128,34 @@ def parse_input_part_two(filename):
                 break
             loop_detector.append(((cx,cy),(dx,dy)))
         cx,cy=cx+dx,cy+dy # Move
-        map[cx][cy] = 'X'
     del all_walked_grids[0] # can't place an obstruction on the starting loc
     count_possible_new_obstructions = 0
-    for (pox,poy) in all_walked_grids: # "possible obstruction" x,y
+    for (pox,poy) in set(all_walked_grids): # "possible obstruction" x,y
         # Edit the map in place to add an obstacle
         if map[pox][poy] == '#':
-            continue
+            continue # skip if it's already an obstacle
         map[pox][poy] = '#'
+        # "Test" this current map to see if we can get stuck in a loop
+        tcx,tcy = px,py # "start" position
+        (dx, dy) = (-1,0) # current direction
+        loop_detector = []
+        while True: # check for loops and grid exits and break
+            (odx,ody) = (dx,dy)
+            # Check edge
+            if tcx+dx==-1 or tcy+dy==-1 or tcx+dx==len(map) or tcy+dy==len(map[0]):
+                break
+            while map[tcx+dx][tcy+dy] == '#':
+                (dx,dy) = directions[(dx,dy)]
+            if (odx,ody) != (dx,dy):
+                # We rotated this step, check or add to loop detector
+                if ((tcx,tcy),(dx,dy)) in loop_detector: # we've just hit a loop
+                    count_possible_new_obstructions += 1
+                    break
+                loop_detector.append(((tcx,tcy),(dx,dy)))
+            tcx,tcy=tcx+dx,tcy+dy # Move
         # Edit the map in place to remove the test obstacle
         map[pox][poy] = '.'
-    # return len(set(possible_new_colliders))
-    return None
+    return count_possible_new_obstructions
 
 print(f'Amount of unique grids visited is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
 print(f'Amount of grids where a single obstacle would init a loop is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
