@@ -64,14 +64,23 @@ def parse_input_part_two(filename):
         return _CACHE_TRANSFORM[num]
     # Blink 75 times
     bucketed_nums = {num:1 for num in nums}
-    for _ in range(75):
+    stable_cache_reached = False
+    for i in range(75):
         new_bucketed_nums = {}
         for num, amount in bucketed_nums.items():
             for new_num in cache_transform_number(num):
                 new_bucketed_nums[new_num] = new_bucketed_nums.get(new_num, 0)
                 new_bucketed_nums[new_num] += amount
+        # To get a sense of how much the cache sped up this, compared to the
+        # very large amount of numbers we'd otherwise be acting on, use this
+        # to see how many numbers you're "actually" caring about. After this
+        # point, no new keys will be added.
+        if set(new_bucketed_nums.keys()) == set(bucketed_nums.keys()) and not stable_cache_reached:
+            print(f"Took {i+1} iterations to reach stable cache, with {len(bucketed_nums.keys())} many values cached")
+            # Took 90 iterations to reach stable cache, with 3811 many values cached < for my input
+            stable_cache_reached = True
         bucketed_nums = new_bucketed_nums.copy()
     return sum(bucketed_nums.values())
 
-print(f'XYZ pt1 is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'XYZ pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of stones after 25 iterations is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of stones after 75 iterations is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
