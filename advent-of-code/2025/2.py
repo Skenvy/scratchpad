@@ -103,16 +103,53 @@ def parse_input_part_one(filename):
                     # print(f"  Add DIM repeated sequence {vmin_1st}{vmin_1st}")
     return sum_IDs
 
-# EXPLAIN PART TWO
+# Ok, so.. we made a LOT of optimisation choices in part one given the knowledge
+# that only numbers that were "exactly one sequence repeated twice" were ones we
+# needs to add to our total.. and pretty much none of them apply to part two..
+# In part two, we are still limited to numbers that are only exactly repeated
+# sequences, but they can repeat any amount of times >= 2. So all our tricks to
+# split numbers in half and treat all the special cases are irrelevant here lol.
+
+# So we have to basically go back to scratch for part two.
 
 def parse_input_part_two(filename):
+    rngs = []
+    sum_IDs = 0
     with open(filename,'r') as lines:
         for line in lines:
-            pass # do something with each line
-    return 'TODO'
+            rngs += [[x.strip() for x in r.split('-')] for r in line.split(',')]
+    for rng in rngs:
+        # Break ranges up into contiguities of "same lengthed integers"
+        for l in range(len(rng[0]), len(rng[1])+1): # l ~ length
+            # Figure out the current min and current max
+            cmin = rng[0] if l == len(rng[0]) else f"{10**len(rng[0])}"
+            cmax = rng[1] if l == len(rng[1]) else f"{10**(len(rng[1])-1)-1}"
+            # Do a very basic test for integers that exactly divide the length
+            divs = [x for x in range(1, l//2+1) if l//x == l/x]
+            # Now we can segment the current length integers into "div" lengths
+            # print(f"Range {rng}: Curr [{cmin},{cmax}] len {l} divs {divs}")
+            _range = range(int(cmin), int(cmax)+1)
+            for div in divs:
+                for sequence in range(int(cmin[:div]), int(cmax[:div])+1):
+                    # Trap it if it's _already_ a repeated sequence!
+                    already_repeated = False
+                    for dd in [x for x in divs if div//x == div/x and x != div]:
+                        # "dd" are the dividers of "div"
+                        if int((f"{sequence}"[:dd])*(div//dd)) == sequence:
+                            already_repeated = True
+                            break
+                    repeated_sequence = int(f"{sequence}"*(l//div))
+                    if repeated_sequence in _range and not already_repeated:
+                        sum_IDs += repeated_sequence
+                        # print(f"    Adding {repeated_sequence} to the sum")
+    return sum_IDs
 
 part_one_example = parse_input_part_one(f'{ADVENT_DAY}-example-input.txt')
 assert part_one_example == 1227775554, f"Failed part one: {part_one_example}"
 
-print(f'Sum "IDs" pt1 is {parse_input_part_one(f'{ADVENT_DAY}-input-1.txt')}')
-print(f'Sum "IDs" pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input-2.txt')}')
+print(f'Sum "IDs" pt1 is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
+
+part_two_example = parse_input_part_two(f'{ADVENT_DAY}-example-input.txt')
+assert part_two_example == 4174379265, f"Failed part two: {part_two_example}"
+
+print(f'Sum "IDs" pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
