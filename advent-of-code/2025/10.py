@@ -18,5 +18,12 @@ def parse_input_part_two(filename):
             pass # do something with each line
     return 'TODO'
 
+part_one_example = parse_input_part_one(f'{ADVENT_DAY}-example-input.txt')
+assert part_one_example == "example", f"Failed part one: {part_one_example}"
+
 print(f'XYZ pt1 is {parse_input_part_one(f'{ADVENT_DAY}-input-1.txt')}')
+
+part_two_example = parse_input_part_two(f'{ADVENT_DAY}-example-input.txt')
+assert part_two_example == "example", f"Failed part two: {part_two_example}"
+
 print(f'XYZ pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input-2.txt')}')
