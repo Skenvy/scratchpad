@@ -50,7 +50,10 @@ def parse_input_part_one(filename):
                 break
     return joltage_sum
 
-# EXPLAIN PART TWO
+# The same as part one, except instead of finding the maximum possible joltage
+# for each row by combining only "two" batteries in order, we now have to turn
+# on 12 batteries in each row and find the maximum possible joltage for 12 being
+# turned on!
 
 def parse_input_part_two(filename):
     with open(filename,'r') as lines:
@@ -64,6 +67,6 @@ assert part_one_example == 357, f"Failed part one: {part_one_example}"
 print(f'Sum joltage pt1 is {parse_input_part_one(f'{ADVENT_DAY}-input-1.txt')}')
 
 part_two_example = parse_input_part_two(f'{ADVENT_DAY}-example-input.txt')
-assert part_two_example == "example", f"Failed part two: {part_two_example}"
+assert part_two_example == 3121910778619, f"Failed part two: {part_two_example}"
 
-print(f'XYZ pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input-2.txt')}')
+print(f'Sum joltage pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input-2.txt')}')
