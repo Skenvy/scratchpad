@@ -14,7 +14,8 @@ def stopwatch(func):
             return func(*args, **kwargs)
         finally:
             end = time.perf_counter()
-            print(f"{func.__name__} took {end - start:.6f}s")
+            filename = args[0][len(AOC_YEAR_DIR)+1:]
+            print(f"{func.__name__}({filename}) took {end - start:.6f}s")
     return wrapper
 
 # Just a neat way to run this lengthy chunk the same way.

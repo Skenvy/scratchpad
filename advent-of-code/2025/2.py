@@ -1,6 +1,12 @@
 # https://adventofcode.com/2025/day/2
 
+import util
 ADVENT_DAY=2
+INPUT_FILE_PART_ONE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
+INPUT_FILE_PART_TWO=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
+_EXAMPLE_INPUT_FILE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-example-input.txt'
+example_answer_one = 1227775554
+example_answer_two = 4174379265
 
 # The input is a list of ranges. A comma seperated list of ranges, two IDs
 # split by hyphens. We need to iterate through the ranges, and then for each
@@ -12,6 +18,7 @@ ADVENT_DAY=2
 # the ranges (ranges of "IDs" and the double-ups are "Invalid IDs"), and add
 # them all together to get the answer for part one.
 
+@util.stopwatch
 def solve_part_one(filename):
     rngs = []
     sum_IDs = 0
@@ -112,6 +119,7 @@ def solve_part_one(filename):
 
 # So we have to basically go back to scratch for part two.
 
+@util.stopwatch
 def solve_part_two(filename):
     rngs = []
     sum_IDs = 0
@@ -144,12 +152,13 @@ def solve_part_two(filename):
                         # print(f"    Adding {repeated_sequence} to the sum")
     return sum_IDs
 
-part_one_example = solve_part_one(f'{ADVENT_DAY}-example-input.txt')
-assert part_one_example == 1227775554, f"Failed part one: {part_one_example}"
-
-print(f'Sum "IDs" pt1 is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
-
-part_two_example = solve_part_two(f'{ADVENT_DAY}-example-input.txt')
-assert part_two_example == 4174379265, f"Failed part two: {part_two_example}"
-
-print(f'Sum "IDs" pt2 is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')
+util.run_solvers(
+    'Sum "IDs"',
+    _EXAMPLE_INPUT_FILE,
+    solve_part_one,
+    example_answer_one,
+    INPUT_FILE_PART_ONE,
+    solve_part_two,
+    example_answer_two,
+    INPUT_FILE_PART_TWO,
+)
