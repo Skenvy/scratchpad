@@ -1,6 +1,10 @@
 # https://adventofcode.com/2025/day/1
 
+import util
 ADVENT_DAY=1
+INPUT_FILE_PART_ONE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
+INPUT_FILE_PART_TWO=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
+_EXAMPLE_INPUT_FILE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-example-input.txt'
 
 # We have a list of instructions, one per line, that are either "L<number>" or
 # "R<number>". The instructions are whether we need to modulo add or module
@@ -16,6 +20,7 @@ ADVENT_DAY=1
 # See https://en.wikipedia.org/wiki/Modulo#In_programming_languages for more.
 # In python, the % does what we want. But this is something to be aware of..
 
+@util.stopwatch
 def parse_input_part_one(filename):
     MODULUS = 100
     current_residue = 50
@@ -49,6 +54,7 @@ def parse_input_part_one(filename):
 # an L2 line, we'd end up with a current residue of 99, but we'd have to count
 # the 0 that was passed over during the rotation from 1 down to 99.
 
+@util.stopwatch
 def parse_input_part_two(filename):
     MODULUS = 100
     current_residue = 50
@@ -92,5 +98,5 @@ def parse_input_part_two(filename):
             count_times_residue_is_zero += (1 if current_residue == 0 else 0)
     return count_times_residue_is_zero+count_times_dial_passes_zero
 
-print(f'#(0%100) pt1 is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'#(0%100) pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'#(0%100) pt1 is {parse_input_part_one(INPUT_FILE_PART_ONE)}')
+print(f'#(0%100) pt2 is {parse_input_part_two(INPUT_FILE_PART_TWO)}')
