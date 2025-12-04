@@ -2,11 +2,11 @@
 
 import util
 ADVENT_DAY=4
-INPUT_FILE_PART_ONE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input-1.txt'
-INPUT_FILE_PART_TWO=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input-2.txt'
+INPUT_FILE_PART_ONE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
+INPUT_FILE_PART_TWO=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
 _EXAMPLE_INPUT_FILE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-example-input.txt'
 example_answer_one = 13
-example_answer_two = 'example'
+example_answer_two = 43
 
 # Our input is a floorplan / grid map, that shows empty spots, '.', and "Rolls
 # of paper" '@'. We need to determine if each '@' is accessible or not, based on
@@ -50,14 +50,52 @@ def solve_part_one(filename):
                     count_accessible_blobs += 1
     return count_accessible_blobs
 
-# EXPLAIN PART TWO
+# For part 2, we still use the same rule for accessibility, but instead of one
+# static count, we must remove accessible '@' and then recheck for accessibility
+# until all accessible '@' are removed. Our result is how many were removed.
 
 @util.stopwatch
 def solve_part_two(filename):
+    # Fill the map
+    map = []
     with open(filename,'r') as lines:
         for line in lines:
-            pass # do something with each line
-    return 'TODO'
+            map_row = list(line)
+            if map_row[-1] == '\n':
+                del map_row[-1]
+            map.append(map_row)
+    # Filled map
+    count_removed_blobs = 0
+    count_accessible_blobs = -1
+    while count_accessible_blobs != 0:
+        count_accessible_blobs = 0
+        removals = []
+        for _row, row in enumerate(map):
+            for _col, val in enumerate(row):
+                if val == '@':
+                    adjacent_grids = [
+                        (_row+1,_col+0),
+                        (_row+1,_col-1),
+                        (_row+0,_col-1),
+                        (_row-1,_col-1),
+                        (_row-1,_col+0),
+                        (_row-1,_col+1),
+                        (_row+0,_col+1),
+                        (_row+1,_col+1),
+                    ]
+                    count_adjacent_blobs = 0
+                    for grid in adjacent_grids:
+                        if grid[0] in range(len(map)):
+                            if grid[1] in range(len(map[0])):
+                                if map[grid[0]][grid[1]] == '@':
+                                    count_adjacent_blobs += 1
+                    if count_adjacent_blobs < 4:
+                        count_accessible_blobs += 1
+                        removals += [(_row, _col)]
+        for (_row, _col) in removals:
+            map[_row][_col] = '.'
+        count_removed_blobs += len(removals)
+    return count_removed_blobs
 
 util.run_solvers(
     'Example puzzle description',
