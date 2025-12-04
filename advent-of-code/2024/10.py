@@ -7,7 +7,7 @@ ADVENT_DAY=10
 # "reachable" from a single trailhead, and it is reachable if it can connect
 # through 012456789, only in cardinals not diagonally.
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     map = []
     trailheads = {}
     with open(filename,'r') as lines:
@@ -39,7 +39,7 @@ def parse_input_part_one(filename):
 # Instead of the trailhead score being the amount of reachable 9's it's now the
 # amount of paths that exist to any reachable 9.
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     map = []
     trailheads = {}
     with open(filename,'r') as lines:
@@ -69,5 +69,5 @@ def parse_input_part_two(filename):
         trailheads[trailhead] = len(set(path_locs))
     return sum(trailheads.values())
 
-print(f'Sum of trailhead scores (reachable peaks) is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Sum of trailhead scores (traversable paths) is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of trailhead scores (reachable peaks) is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of trailhead scores (traversable paths) is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

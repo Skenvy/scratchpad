@@ -8,7 +8,7 @@ ADVENT_DAY=8
 # empty space, overlapping a symbol, or overlapping another antinode) that must
 # be counted, to get the count of all UNIQUE locations that are an antinode.
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     all_symbol_locations = {}
     map = []
     with open(filename,'r') as lines:
@@ -42,7 +42,7 @@ def parse_input_part_one(filename):
 # dipole now creates antinodes infinitely in both directions (only bounded by
 # the size of the map), including on top of each pole in the dipole. Recount.
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     all_symbol_locations = {}
     map = []
     with open(filename,'r') as lines:
@@ -81,5 +81,5 @@ def parse_input_part_two(filename):
             antinode_locations.extend(possible_antinodes)
     return len(set(antinode_locations))
 
-print(f'Amount of unique antinode locations (singular dipoles) is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Amount of unique antinode locations (resonant dipoles) is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of unique antinode locations (singular dipoles) is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of unique antinode locations (resonant dipoles) is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

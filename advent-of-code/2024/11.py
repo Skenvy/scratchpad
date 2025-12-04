@@ -7,7 +7,7 @@ ADVENT_DAY=11
 # for today are doing the exact same thing, just to different X's. The solution
 # for part one is the "naive" approach of just updating the numbers in place.
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     nums = []
     with open(filename,'r') as lines:
         for line_index, line in enumerate(lines):
@@ -39,7 +39,7 @@ def parse_input_part_one(filename):
 # Do this by acting on the "amount" of times "number X" appears, rather than
 # just on the "number X" done "amount" times.
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     # Read in the numbers
     nums = []
     with open(filename,'r') as lines:
@@ -82,5 +82,5 @@ def parse_input_part_two(filename):
         bucketed_nums = new_bucketed_nums.copy()
     return sum(bucketed_nums.values())
 
-print(f'Amount of stones after 25 iterations is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Amount of stones after 75 iterations is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of stones after 25 iterations is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of stones after 75 iterations is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

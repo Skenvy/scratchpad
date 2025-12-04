@@ -11,7 +11,7 @@ ADVENT_DAY=9
 # checksum for the fully fragmented chunks by summing the multiples of each
 # chunk's value (what its filename-index value was) by its new location.
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     disk_map = []
     with open(filename,'r') as lines:
         for line in lines:
@@ -52,7 +52,7 @@ def parse_input_part_one(filename):
 # to earlier in the chunks the first pass over, it doesn't get moved, even if
 # space later opens up after moving lower chunks.
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     disk_map = []
     with open(filename,'r') as lines:
         for line in lines:
@@ -99,5 +99,5 @@ def parse_input_part_two(filename):
     checksum = sum([p*v for p,v in enumerate(chunks) if v != None])
     return checksum
 
-print(f'Checksum of fragmented chunks is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Checksum of compacted chunks is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Checksum of fragmented chunks is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Checksum of compacted chunks is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

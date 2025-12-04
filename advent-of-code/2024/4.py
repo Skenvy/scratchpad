@@ -4,7 +4,7 @@ ADVENT_DAY=4
 
 # Word search! Input is a word search grid! Count unique "XMAS"'s
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     words_to_search_for = ['XMAS']
     count_word_instances = 0
     word_search_directions = {
@@ -44,7 +44,7 @@ def parse_input_part_one(filename):
 
 # EXPLAIN PART TWO
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     count_word_instances = 0
     grid = []
     with open(filename,'r') as lines:
@@ -65,5 +65,5 @@ def parse_input_part_two(filename):
                 count_word_instances += 1*(top_left_to_bottom_right == ['M','S'])*(top_right_to_bottom_left == ['M','S'])
     return count_word_instances
 
-print(f'Amount of XMAS\'s is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Amount of X-"MAS"\'s is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of XMAS\'s is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of X-"MAS"\'s is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

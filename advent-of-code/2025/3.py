@@ -12,7 +12,7 @@ ADVENT_DAY=3
 # if we turned on batteries "6" and "7" in our row, the row's power delivered
 # would be "67". We need to find the maximum power for each row and sum them up.
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     joltage_sum = 0
     with open(filename,'r') as lines:
         for line in lines:
@@ -61,7 +61,7 @@ def parse_input_part_one(filename):
 # on the edge with "100 choose 12", or... 1,050,421,051,106,700 cases... so
 # optimisations for this are strictly required.
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     joltage_sum = 0
     # Create a recursive function we can call as part of this, where we give it
     # the "subsequent line segment", "subline", which is the rest of the line
@@ -108,12 +108,12 @@ def parse_input_part_two(filename):
             joltage_sum += res
     return joltage_sum
 
-part_one_example = parse_input_part_one(f'{ADVENT_DAY}-example-input.txt')
+part_one_example = solve_part_one(f'{ADVENT_DAY}-example-input.txt')
 assert part_one_example == 357, f"Failed part one: {part_one_example}"
 
-print(f'Sum joltage pt1 is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum joltage pt1 is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
 
-part_two_example = parse_input_part_two(f'{ADVENT_DAY}-example-input.txt')
+part_two_example = solve_part_two(f'{ADVENT_DAY}-example-input.txt')
 assert part_two_example == 3121910778619, f"Failed part two: {part_two_example}"
 
-print(f'Sum joltage pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum joltage pt2 is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

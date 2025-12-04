@@ -5,7 +5,7 @@ ADVENT_DAY=1
 # Read 2 columns of a text file into two lists, order those lists, and add up
 # each indexes difference between the two sorted lists.
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     with open(filename,'r') as lines:
         sum_of_diffs = 0
         left_list = []
@@ -24,7 +24,7 @@ def parse_input_part_one(filename):
 # Now, instead of adding up all the differences, we need to multiply each entry
 # in the left list by the amount of times it appears in the right list.
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     with open(filename,'r') as lines:
         sum_of_mults = 0
         left_list = []
@@ -45,5 +45,5 @@ def parse_input_part_two(filename):
             sum_of_mults += left_value * left_count * right_map.get(left_value, 0)
     return sum_of_mults
 
-print(f'Sum of all diffs is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Sum of all mult-freqs is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of all diffs is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of all mult-freqs is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

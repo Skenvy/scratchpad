@@ -4,7 +4,7 @@ ADVENT_DAY=12
 
 # EXPLAIN PART ONE
 
-def parse_input_part_one(filename):    
+def solve_part_one(filename):    
     garden_plots = []
     with open(filename,'r') as lines:
         for line_index, line in enumerate(lines):
@@ -54,7 +54,7 @@ def parse_input_part_one(filename):
 
 # EXPLAIN PART TWO
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     garden_plots = []
     with open(filename,'r') as lines:
         for line_index, line in enumerate(lines):
@@ -110,5 +110,5 @@ def parse_input_part_two(filename):
         # print(f"Region of plant {contiguity[0]} with area {contiguity[1]} and boundaries {contiguity[3]} for price {contiguity[1]*contiguity[3]}")
     return sum_contiguity_area_x_boundaries
 
-print(f'Sum of garden plot contiguity areas mult perimeters is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Sum of garden plot contiguity areas mult boundaries is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of garden plot contiguity areas mult perimeters is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of garden plot contiguity areas mult boundaries is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

@@ -7,7 +7,7 @@ ADVENT_DAY=5
 # in the second set of lines that adhere to all rules in first set of lines,
 # then iterate over valid lines and add up the middle number from each.
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     rules = {}
     sum_middle_valid_lines = 0
     with open(filename,'r') as lines:
@@ -41,7 +41,7 @@ def parse_input_part_one(filename):
 # broke one of the rules. Fix those lines so they adhere to the rules, then of
 # the fixed lines, again, sum up their middle values.
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     rules = {}
     sum_middle_invalid_lines = 0
     with open(filename,'r') as lines:
@@ -89,5 +89,5 @@ def parse_input_part_two(filename):
                     sum_middle_invalid_lines += new_pages[len(new_pages)//2]
     return sum_middle_invalid_lines
 
-print(f'Sum of middle values in valid lines is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Sum of middle values in invalid lines after fixing is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of middle values in valid lines is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of middle values in invalid lines after fixing is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

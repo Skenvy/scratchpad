@@ -7,7 +7,7 @@ ADVENT_DAY=6
 # filled space (on the empty space before the filled space), count how many
 # unique empty spaces the agent will pass through before exiting the grid.
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     # Fill the map
     map = []
     px, py = -1, -1 # "player x, player y"
@@ -61,7 +61,7 @@ def parse_input_part_one(filename):
 # Instead of counting unique steps, now, we need to count how many grids on to
 # which we could place a single additional obstacle, that would trap in a loop
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     # Fill the map
     map = []
     px, py = -1, -1 # "player x, player y"
@@ -157,5 +157,5 @@ def parse_input_part_two(filename):
         map[pox][poy] = '.'
     return count_possible_new_obstructions
 
-print(f'Amount of unique grids visited is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Amount of grids where a single obstacle would init a loop is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of unique grids visited is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Amount of grids where a single obstacle would init a loop is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

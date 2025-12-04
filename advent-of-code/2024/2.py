@@ -6,7 +6,7 @@ ADVENT_DAY=2
 # increasing, or only decreasing, and by no more than 3 at a time. Count the
 # amount of lines that meet this criteria
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     with open(filename,'r') as lines:
         num_of_safe_reps = 0
         for line in lines:
@@ -29,7 +29,7 @@ def parse_input_part_one(filename):
 # The same as before, except each line is allowed to have at most one bad value
 # that removing from an unsafe line can make it a safe line.
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     with open(filename,'r') as lines:
         num_of_safe_reps = 0
         for line in lines:
@@ -113,5 +113,5 @@ def parse_input_part_two(filename):
                 print(nums, possible_bad_Is, possible_bad_value_indexes)
     return num_of_safe_reps
 
-print(f'Number of safe reports no bad values is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Number of safe reports allow one bad value is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Number of safe reports no bad values is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Number of safe reports allow one bad value is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

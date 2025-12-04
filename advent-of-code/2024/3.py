@@ -7,7 +7,7 @@ ADVENT_DAY=3
 
 from re import findall, match
 
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     with open(filename,'r') as lines:
         sum_of_muls = 0
         for line in lines:
@@ -21,7 +21,7 @@ def parse_input_part_one(filename):
 # regexr and see that "(mul\(\d+,\d+\)|do\(\)|don't\(\))" finds what we expect
 # in "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
 
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     do = True
     with open(filename,'r') as lines:
         sum_of_muls = 0
@@ -37,5 +37,5 @@ def parse_input_part_two(filename):
                     do = mul == "do()"
     return sum_of_muls
 
-print(f'Sum of all muls is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
-print(f'Sum of all muls with DO and DONT is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of all muls is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
+print(f'Sum of all muls with DO and DONT is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')

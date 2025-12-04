@@ -21,7 +21,7 @@ _EXAMPLE_INPUT_FILE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-example-input.txt'
 # In python, the % does what we want. But this is something to be aware of..
 
 @util.stopwatch
-def parse_input_part_one(filename):
+def solve_part_one(filename):
     MODULUS = 100
     current_residue = 50
     count_times_residue_is_zero = 0
@@ -55,7 +55,7 @@ def parse_input_part_one(filename):
 # the 0 that was passed over during the rotation from 1 down to 99.
 
 @util.stopwatch
-def parse_input_part_two(filename):
+def solve_part_two(filename):
     MODULUS = 100
     current_residue = 50
     count_times_residue_is_zero = 0
@@ -98,5 +98,5 @@ def parse_input_part_two(filename):
             count_times_residue_is_zero += (1 if current_residue == 0 else 0)
     return count_times_residue_is_zero+count_times_dial_passes_zero
 
-print(f'#(0%100) pt1 is {parse_input_part_one(INPUT_FILE_PART_ONE)}')
-print(f'#(0%100) pt2 is {parse_input_part_two(INPUT_FILE_PART_TWO)}')
+print(f'#(0%100) pt1 is {solve_part_one(INPUT_FILE_PART_ONE)}')
+print(f'#(0%100) pt2 is {solve_part_two(INPUT_FILE_PART_TWO)}')
