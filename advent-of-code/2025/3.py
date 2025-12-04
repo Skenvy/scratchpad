@@ -55,18 +55,65 @@ def parse_input_part_one(filename):
 # on 12 batteries in each row and find the maximum possible joltage for 12 being
 # turned on!
 
+# This is clearly the point in this year's calendar where optimisations become
+# a requirement, because for part one, we had a "100 choose 2" problem where,
+# unoptimised, we would have had 4950 cases to test. In part two, we're living
+# on the edge with "100 choose 12", or... 1,050,421,051,106,700 cases... so
+# optimisations for this are strictly required.
+
 def parse_input_part_two(filename):
+    joltage_sum = 0
+    # Create a recursive function we can call as part of this, where we give it
+    # the "subsequent line segment", "subline", which is the rest of the line
+    # after the first instance of whatever character it was previously split on.
+    # When we call it the first time we give it the amount of digits we want to
+    # use out of the whole line.
+    def line_joltage(subline, digits):
+        # Both the terminal and non terminal case use the same range 9 to 1.
+        if digits <= 1:
+            for _nth in range(9,0,-1):
+                split_subline = subline.split(f'{_nth}')
+                if len(split_subline) > 1:
+                    # the _nth digit exists and we want to use it because it's
+                    # the first highest value we found.
+                    # print(f'[Call:{digits}] Return from attempt at {_nth}')
+                    return _nth
+                # print(f'[Call:{digits}] Continue from attempt at {_nth}')
+        else:
+            for _nth in range(9,0,-1):
+                spline = subline.split(f'{_nth}') # "Sp[li](t sub)[li]ne"
+                # Two cases would lead to us skipping this _nth value. If there
+                # is only one value in the list, then the value didn't exist in
+                # the line so we necessarily skip it. At the same time, if there
+                # are more than two entries, we also need to make sure there are
+                # enough digits left in the rest of the subline after the first
+                # instance of the current _nth we just split on! The number of
+                # digits used, as an input, is the length of the string that
+                # the current call must return. So we need at least "that value
+                # minus one" many digits left in the sub-sub-line, or we wont be
+                # able to return a value that uses the input many digits.
+                subsubline = f'{_nth}'.join(spline[1:])
+                if len(spline) == 1 or len(subsubline) < (digits-1):
+                    # print(f'[Call:{digits}] Continue from attempt at {_nth}')
+                    continue
+                # If we didn't continue, then we can use the current _nth and
+                # recurse on the remaining subline.
+                # print(f'[Call:{digits}] Return from attempt at {_nth}')
+                return (10**(digits-1))*_nth + line_joltage(subsubline,digits-1)
     with open(filename,'r') as lines:
         for line in lines:
-            pass # do something with each line
-    return 'TODO'
+            # print(line.strip())
+            res = line_joltage(line.strip(), 12)
+            # print(f'  Result: Added {res}')
+            joltage_sum += res
+    return joltage_sum
 
 part_one_example = parse_input_part_one(f'{ADVENT_DAY}-example-input.txt')
 assert part_one_example == 357, f"Failed part one: {part_one_example}"
 
-print(f'Sum joltage pt1 is {parse_input_part_one(f'{ADVENT_DAY}-input-1.txt')}')
+print(f'Sum joltage pt1 is {parse_input_part_one(f'{ADVENT_DAY}-input.txt')}')
 
 part_two_example = parse_input_part_two(f'{ADVENT_DAY}-example-input.txt')
 assert part_two_example == 3121910778619, f"Failed part two: {part_two_example}"
 
-print(f'Sum joltage pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input-2.txt')}')
+print(f'Sum joltage pt2 is {parse_input_part_two(f'{ADVENT_DAY}-input.txt')}')
