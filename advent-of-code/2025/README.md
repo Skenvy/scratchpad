@@ -31,7 +31,7 @@ Only timed once-ish each, so not averaged at all.
 | :--- | :--- | :--- |
 |  [1](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/1.py)  | [`0.001243s`][Day 1 Part 1]  | [`0.001643s`][Day 1 Part 2]  |
 |  [2](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/2.py)  | [`0.000243s`][Day 2 Part 1]  | [`0.000441s`][Day 2 Part 2]  |
-|  [3](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/3.py)  | [`?`][Day 3 Part 1]  | [`?`][Day 3 Part 2]  |
+|  [3](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/3.py)  | [`0.000556s`][Day 3 Part 1]  | [`0.002667s`][Day 3 Part 2]  |
 |  [4](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/4.py)  | [`?`][Day 4 Part 1]  | [`?`][Day 4 Part 2]  |
 |  [5](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/5.py)  | [`?`][Day 5 Part 1]  | [`?`][Day 5 Part 2]  |
 |  [6](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/6.py)  | [`?`][Day 6 Part 1]  | [`?`][Day 6 Part 2]  |

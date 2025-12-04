@@ -1,6 +1,12 @@
 # https://adventofcode.com/2025/day/3
 
+import util
 ADVENT_DAY=3
+INPUT_FILE_PART_ONE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
+INPUT_FILE_PART_TWO=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
+_EXAMPLE_INPUT_FILE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-example-input.txt'
+example_answer_one = 357
+example_answer_two = 3121910778619
 
 # Our input is a set of lines which are each lists of single digit values, from
 # 1 to 9. E.g. a row could be "123456789" which would be 9 seperate values that
@@ -12,6 +18,7 @@ ADVENT_DAY=3
 # if we turned on batteries "6" and "7" in our row, the row's power delivered
 # would be "67". We need to find the maximum power for each row and sum them up.
 
+@util.stopwatch
 def solve_part_one(filename):
     joltage_sum = 0
     with open(filename,'r') as lines:
@@ -61,6 +68,7 @@ def solve_part_one(filename):
 # on the edge with "100 choose 12", or... 1,050,421,051,106,700 cases... so
 # optimisations for this are strictly required.
 
+@util.stopwatch
 def solve_part_two(filename):
     joltage_sum = 0
     # Create a recursive function we can call as part of this, where we give it
@@ -108,12 +116,13 @@ def solve_part_two(filename):
             joltage_sum += res
     return joltage_sum
 
-part_one_example = solve_part_one(f'{ADVENT_DAY}-example-input.txt')
-assert part_one_example == 357, f"Failed part one: {part_one_example}"
-
-print(f'Sum joltage pt1 is {solve_part_one(f'{ADVENT_DAY}-input.txt')}')
-
-part_two_example = solve_part_two(f'{ADVENT_DAY}-example-input.txt')
-assert part_two_example == 3121910778619, f"Failed part two: {part_two_example}"
-
-print(f'Sum joltage pt2 is {solve_part_two(f'{ADVENT_DAY}-input.txt')}')
+util.run_solvers(
+    'Sum joltage',
+    _EXAMPLE_INPUT_FILE,
+    solve_part_one,
+    example_answer_one,
+    INPUT_FILE_PART_ONE,
+    solve_part_two,
+    example_answer_two,
+    INPUT_FILE_PART_TWO,
+)
