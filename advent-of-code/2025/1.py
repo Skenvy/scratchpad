@@ -5,6 +5,8 @@ ADVENT_DAY=1
 INPUT_FILE_PART_ONE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
 INPUT_FILE_PART_TWO=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-input.txt'
 _EXAMPLE_INPUT_FILE=f'{util.AOC_YEAR_DIR}/{ADVENT_DAY}-example-input.txt'
+example_answer_one = 3
+example_answer_two = 6
 
 # We have a list of instructions, one per line, that are either "L<number>" or
 # "R<number>". The instructions are whether we need to modulo add or module
@@ -98,5 +100,13 @@ def solve_part_two(filename):
             count_times_residue_is_zero += (1 if current_residue == 0 else 0)
     return count_times_residue_is_zero+count_times_dial_passes_zero
 
-print(f'#(0%100) pt1 is {solve_part_one(INPUT_FILE_PART_ONE)}')
-print(f'#(0%100) pt2 is {solve_part_two(INPUT_FILE_PART_TWO)}')
+util.run_solvers(
+    '#(0%100)',
+    _EXAMPLE_INPUT_FILE,
+    solve_part_one,
+    example_answer_one,
+    INPUT_FILE_PART_ONE,
+    solve_part_two,
+    example_answer_two,
+    INPUT_FILE_PART_TWO,
+)
