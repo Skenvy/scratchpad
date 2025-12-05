@@ -8,7 +8,7 @@
 [Day 4 Part 1]: https://github.com/Skenvy/scratchpad/blob/bf30d0a5d74a3ef48b42726edead325562ec3f36/advent-of-code/2025/4.py#L19-L51
 [Day 4 Part 2]: https://github.com/Skenvy/scratchpad/blob/31bb74dc136a7563439d486871f0888db38e4cdb/advent-of-code/2025/4.py#L58-L102
 [Day 5 Part 1]: https://github.com/Skenvy/scratchpad/blob/6172afcf325b9e131360f99297398841e5197095/advent-of-code/2025/5.py#L25-L74
-[Day 5 Part 2]: #TODO
+[Day 5 Part 2]: https://github.com/Skenvy/scratchpad/blob/d10cf2415218f6601c47cf9dd61e6fb0979bdc04/advent-of-code/2025/5.py#L81-L148
 [Day 6 Part 1]: #TODO
 [Day 6 Part 2]: #TODO
 [Day 7 Part 1]: #TODO
@@ -33,7 +33,7 @@ Only timed once-ish each, so not averaged at all.
 |  [2](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/2.py)  | [`0.000243s`][Day 2 Part 1]  | [`0.000441s`][Day 2 Part 2]  |
 |  [3](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/3.py)  | [`0.000556s`][Day 3 Part 1]  | [`0.002667s`][Day 3 Part 2]  |
 |  [4](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/4.py)  | [`0.018384s`][Day 4 Part 1]  | [`0.323952s`][Day 4 Part 2]  |
-|  [5](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/5.py)  | [`0.001171s`][Day 5 Part 1]  | [`?`][Day 5 Part 2]  |
+|  [5](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/5.py)  | [`0.001171s`][Day 5 Part 1]  | [`0.000326s`][Day 5 Part 2]  |
 |  [6](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/6.py)  | [`?`][Day 6 Part 1]  | [`?`][Day 6 Part 2]  |
 |  [7](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/7.py)  | [`?`][Day 7 Part 1]  | [`?`][Day 7 Part 2]  |
 |  [8](https://github.com/Skenvy/scratchpad/blob/main/advent-of-code/2025/8.py)  | [`?`][Day 8 Part 1]  | [`?`][Day 8 Part 2]  |
