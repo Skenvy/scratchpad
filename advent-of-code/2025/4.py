@@ -65,11 +65,18 @@ def solve_part_two(filename):
                 del map_row[-1]
             map.append(map_row)
     # Filled map
+    # We don't need to keep track of ones we're going to remove and do the
+    # removal async, because if we would remove them, then we can remove them
+    # straight away and subsequent line counts will preempt the removals on the
+    # next line. This should reduce the amount of times we have to loop the
+    # whole grid, and is only possible because we only have on condition on
+    # accessibility and it's an upper limit on adjacent neighbours.
     count_removed_blobs = 0
-    count_accessible_blobs = -1
-    while count_accessible_blobs != 0:
-        count_accessible_blobs = 0
-        removals = []
+    prior_count_removed_blobs = -1
+    # Track if we managed to remove any extra this cycle or if we've finished by
+    # going until the prior count equals the current count.
+    while prior_count_removed_blobs != count_removed_blobs:
+        prior_count_removed_blobs = count_removed_blobs
         for _row, row in enumerate(map):
             for _col, val in enumerate(row):
                 if val == '@':
@@ -90,15 +97,12 @@ def solve_part_two(filename):
                                 if map[grid[0]][grid[1]] == '@':
                                     count_adjacent_blobs += 1
                     if count_adjacent_blobs < 4:
-                        count_accessible_blobs += 1
-                        removals += [(_row, _col)]
-        for (_row, _col) in removals:
-            map[_row][_col] = '.'
-        count_removed_blobs += len(removals)
+                        count_removed_blobs += 1
+                        map[_row][_col] = '.'
     return count_removed_blobs
 
 util.run_solvers(
-    'Example puzzle description',
+    '#Accessible "@"',
     _EXAMPLE_INPUT_FILE,
     solve_part_one,
     example_answer_one,
