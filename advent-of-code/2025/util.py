@@ -6,7 +6,10 @@ from collections.abc import Callable
 # This util is adjacent to the files that import it..
 AOC_YEAR_DIR = os.path.dirname(os.path.realpath(__file__))
 
-def stopwatch(func):
+# All our solver functions to time are typed as Callable[[str], any] where the
+# str input is the filename, that was earlier prepended with the AOC_YEAR_DIR
+# so we can strip that from the first arg to get just the filename ran on.
+def stopwatch(func: Callable[[str], any]):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
