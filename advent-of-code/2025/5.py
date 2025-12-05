@@ -73,14 +73,79 @@ def solve_part_one(filename):
         count_in_range_IDs += 1
     return count_in_range_IDs
 
-# EXPLAIN PART TWO
+# For part two, we don't care about the list of individual IDs. We need to take
+# all the ranges, and find the unique amount of integers in all of the ranges
+# combined. e.g. range 1-3 and range 5-7 would be "6" ~= |{1,2,3,5,6,7}|
 
 @util.stopwatch
 def solve_part_two(filename):
+    import bisect
+    from functools import cache
+    ranges = []
+    insort_key = cache(lambda x : x[0])
+    count_all_range_IDs = 0
     with open(filename,'r') as lines:
         for line in lines:
-            pass # do something with each line
-    return 'TODO'
+            sline = line.strip()
+            if sline == '':
+                break # skip the empty line, _and_ all the IDs after it.
+            # _IDs needs to be __hash__'able by insort so tuple instead of list
+            _IDs = tuple([int(x) for x in sline.split('-')])
+            assert len(_IDs) ==2, f"Split line {line.strip()} was not two IDs"
+            if len(_IDs) == 2:
+                # Reading in a range
+                bisect.insort(ranges, (min(_IDs), _IDs), key=insort_key)
+            # We don't else this because we don't care about reading IDs here.
+    # Now we should have a sorted list of ranges.
+    # print(f'Evaluating RANGE:{ranges[0][1]}')
+    # print(f'  START windowing a new current range {ranges[0][1]}')
+    window_low = ranges[0][1][0]
+    window_high = ranges[0][1][1]
+    del ranges[0]
+    final_range_was_already_extended = False
+    for _ri, _range in enumerate(ranges):
+        # print(f'Evaluating RANGE:{_range[1]}')
+        this_low = _range[1][0]
+        this_high = _range[1][1]
+        # We are now either adding subsequent ranges to the current window range
+        # or counting the size of the current range and then terminating it.
+        # If "this" range's low is lower than the "current" range high, we're in
+        # a range that overlaps with the current range, so extend the current..
+        if this_low <= window_high:
+            # It's possible ranges, which we've ordered by lowest value, are out
+            # of order with regards to highest values, so take a max.
+            # print(f'  EXTEND ({window_low}, {window_high}) with {_range[1]}')
+            window_high = max(window_high, this_high)
+            # If we extended the current range, keep going until we can't, but
+            # also don't keep going if it was the final range...
+            if _ri+1 < len(ranges):
+                continue
+            else:
+                final_range_was_already_extended = True
+        # We are now counting the current range after all possible extensions,
+        # and then terminating it, and starting the next window from this one.
+        # print(f'  TERMINATE ({window_low}, {window_high})')
+        count_all_range_IDs += (window_high-window_low)+1
+        # If we are on the final range, and it did not overlap a prior range, it
+        # means the prior range, or set of extended ranges, would've terminated
+        # and we would have just started a new window on the non-overlapping
+        # final range. We need a way to know if we are on the final range, and
+        # if it did not overlap the prior range / set-of-ranges.
+        if _ri == len(ranges)-1: # then we're on the final range
+            # We still need to know whether or not "this" (final) range
+            # overlapped with the window or was non-overlapping. There's a lot
+            # of ways to treat this using tricks of the "this" high and the
+            # window high, but there's too many traps so just use a flag.
+            if not final_range_was_already_extended:
+                # print(f' Evaluating FINAL RANGE: ({this_low}, {this_high})')
+                count_all_range_IDs += (this_high-this_low)+1
+        else:
+            # If we aren't on the final range and we terminated the previous
+            # window, then start the next window to continue in the next loop.
+            # print(f'  START windowing a new current range {_range[1]}')
+            window_low = this_low
+            window_high = this_high
+    return count_all_range_IDs
 
 util.run_solvers(
     '#IDs-in-range',
