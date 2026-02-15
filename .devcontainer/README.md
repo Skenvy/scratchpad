@@ -4,12 +4,19 @@
 [supported tools]: https://containers.dev/supporting
 [cli]: https://containers.dev/implementors/reference/
 [devcontainer.json]: https://containers.dev/implementors/json_reference/
+[spec devcontainer.json location]: https://containers.dev/implementors/spec/#devcontainerjson
 <!-- codespaces -->
 [codespaces]: https://docs.github.com/en/codespaces
+[account codespaces]: https://github.com/codespaces
 [mcr.microsoft.com/devcontainers/universal]: https://mcr.microsoft.com/en-us/artifact/mar/devcontainers/universal/about
 [universal image README]: https://github.com/devcontainers/images/blob/main/src/universal/README.md
 [universal image `Dockerfile`]: https://github.com/devcontainers/images/blob/main/src/universal/.devcontainer/Dockerfile
 [universal image versions]: https://github.com/devcontainers/images/tree/main/src/universal/history
+[mcr search for "container images"]: https://mcr.microsoft.com/en-us/catalog?search=container%20images
+[mcr.microsoft.com/devcontainers/base]: https://mcr.microsoft.com/en-us/artifact/mar/devcontainers/base/about
+[base-alpine]: https://github.com/devcontainers/images/tree/main/src/base-alpine
+[base-debian]: https://github.com/devcontainers/images/tree/main/src/base-debian
+[base-ubuntu]: https://github.com/devcontainers/images/tree/main/src/base-ubuntu
 [Introduction to dev containers]: https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers
 [Using the default dev container configuration]: https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#using-the-default-dev-container-configuration
 <!-- vsc -->
@@ -38,6 +45,17 @@
 There exists a "reference implementation" [cli][cli], but other than that, the tools which most readily, and early, adopted the [spec][spec], are primarily the two Microsoft products: for their tool VS Code, through a [vsc extension "Dev Containers"][vsc extension] and through their platform, GitHub [codespaces][codespaces].
 
 Even though we focus on setting up devcontainers for use with both vsc and gh here, they have fairly different suggested initial configurations, and different experiences of setting up via their native platforms, so we cover what those experiences are to figure out what is the best overall approach.
+
+## spec
+Before diving in to codespaces and the vsc extension, it's worth highlighting some pieces of the spec, or at least, mentioning them here if they are implied but not specifically spelled out later. In no particular order...
+
+### `devcontainer.json` order of precedence
+There is an order in which different `devcontainer.json` files will be looked for to use, according to [this][spec devcontainer.json location]. To "quote" the spec:
+* 1st is `<repo-root>/.devcontainer/devcontainer.json`
+* 2nd is `<repo-root>/.devcontainer.json`
+* 3rd is `<repo-root>/.devcontainer/<folder>/devcontainer.json` (where `<folder>` is a sub-folder, one level deep)
+
+You can use these various potential paths to include multiple different `devcontainer.json` configurations, with an order of precedence.
 
 ## GitHub Codespaces
 [Codespaces][codespaces] are best thought of as a service GitHub provides as a "layer of management" over the use of devcontainers in a repo, but it can be used without setting up or configuring any devcontainers, by way of a "default" devcontainer. While setting up initially, focussing solely on vsc and ignoring gh might offer a greater degree of freedom, but it would be easier to start from what features of devcontainers gh codespaces puts front and center, before branching out to see what other options exist.
@@ -85,8 +103,13 @@ If it's possible/reasonable for you to run a container from a base image that is
 * You can see your repository codespaces by simply adding `/codespaces` to the end of your repo url:
     * i.e. `https://github.com/<owner>/<repo>/codespaces`
     * e.g. [`https://github.com/Skenvy/scratchpad/codespaces`][Skenvy/scratchpad codespaces]
+* There's also an account view of codespaces at [`https://github.com/codespaces`][account codespaces]
 * the options if you try to [configure and create / new with options...][configure and create / new with options...] are limited to branch, region, and machine type, and don't expose any of the devcontainer options at that stage.
 * The current [repo codespaces settings][repo codespaces settings] are limited to configuring prebuilds.
+* Although `universal` is the default image, there is also a `base` image, [mcr.microsoft.com/devcontainers/base][mcr.microsoft.com/devcontainers/base].
+    * [`base-alpine`][base-alpine]
+    * [`base-debian`][base-debian]
+    * [`base-ubuntu`][base-ubuntu]
 
 ## VS Code Extension
 The [vsc extension][vsc extension].
