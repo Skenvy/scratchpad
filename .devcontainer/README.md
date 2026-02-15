@@ -5,6 +5,7 @@
 [cli]: https://containers.dev/implementors/reference/
 [devcontainer.json]: https://containers.dev/implementors/json_reference/
 [spec devcontainer.json location]: https://containers.dev/implementors/spec/#devcontainerjson
+[templates]: https://containers.dev/templates
 <!-- codespaces -->
 [codespaces]: https://docs.github.com/en/codespaces
 [account codespaces]: https://github.com/codespaces
@@ -19,12 +20,23 @@
 [base-ubuntu]: https://github.com/devcontainers/images/tree/main/src/base-ubuntu
 [Introduction to dev containers]: https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers
 [Using the default dev container configuration]: https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#using-the-default-dev-container-configuration
+[codespace hostRequirements]: https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/configuring-dev-containers/setting-a-minimum-specification-for-codespace-machines
 <!-- vsc -->
 [vsc extension]: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
 [Developing inside a Container]: https://code.visualstudio.com/docs/devcontainers/containers
 [Create a Dev Container]: https://code.visualstudio.com/docs/devcontainers/create-dev-container
 [Dev Container CLI]: https://code.visualstudio.com/docs/devcontainers/devcontainer-cli
-<!-- misc -->
+[vsc sharing-git-credentials]: https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials
+[`.gitattributes` line endings tip]: https://code.visualstudio.com/docs/remote/troubleshooting#_resolving-git-line-ending-issues-in-wsl-resulting-in-many-modified-files
+<!-- misc generic -->
+[docker]: https://www.docker.com/
+[OCI]: https://opencontainers.org/
+[moby]: https://mobyproject.org/
+[podman]: https://podman.io/
+[gitattributes]: https://git-scm.com/docs/gitattributes
+[SO: sharing ssh wtih container]: https://stackoverflow.com/questions/75449081
+[SO: Normalise line endings]: https://stackoverflow.com/a/15646791/9960809
+<!-- misc specific to this repo (or any one of my repos) -->
 [my dotfiles]: https://github.com/Skenvy/dotfiles/tree/main/.devcontainer
 [my `install.sh`]: https://github.com/Skenvy/dotfiles/blob/main/install.sh
 [configure a dev container e.g.]: https://github.com/Skenvy/scratchpad/new/main?dev_container_template=1&filename=.devcontainer%2Fdevcontainer.json
@@ -33,7 +45,7 @@
 [repo codespaces settings]: https://github.com/Skenvy/scratchpad/settings/codespaces
 
 # [Devcontainers](https://github.com/Skenvy/scratchpad/blob/main/.devcontainer/README.md)
-> [!WARNING]
+> [!CAUTION]
 > These are just some notes on testing the experience of setting up [devcontainers][devcontainers], a convenient wrapper that makes developing in configurable containers _easier_ by providing a tool that does many things OotB that have always been possible but cumbersome.
 >
 > I've organised these in a way that makes them make the most sense to me but probably aren't easy to read unless I've linked you to a specific section or highlighted note.
@@ -44,10 +56,16 @@
 
 There exists a "reference implementation" [cli][cli], but other than that, the tools which most readily, and early, adopted the [spec][spec], are primarily the two Microsoft products: for their tool VS Code, through a [vsc extension "Dev Containers"][vsc extension] and through their platform, GitHub [codespaces][codespaces].
 
+> [!IMPORTANT]
+> To work _locally_ with any implementation of the devcontainer [spec][spec], we'll need to make sure we have installed [docker][docker], or some other [OCI][OCI] compliant tool e.g. ([moby][moby] or [podman][podman]). We could theoretically work with a service that hosts the containers, with GitHub codespaces being the prime example of this. But to use devcontainers _locally_, we'll need some OCI tool.
+
 Even though we focus on setting up devcontainers for use with both vsc and gh here, they have fairly different suggested initial configurations, and different experiences of setting up via their native platforms, so we cover what those experiences are to figure out what is the best overall approach.
 
-## spec
-Before diving in to codespaces and the vsc extension, it's worth highlighting some pieces of the spec, or at least, mentioning them here if they are implied but not specifically spelled out later. In no particular order...
+> [!NOTE]
+> GitHub and VS Code are both products of Microsoft, so there is significant overlap of their documentation, and they liberally make use of linking between their docs, much more so from the codespace docs on GitHub making frequent use of linking to explanations / guides in the vsc docs, though. Which is worth mentioning here because although we start off with a look at the codespace docs, we don't preemptively follow those links to the vs code docs until we get to that section. Which means large chunks of the github docs that just act as precursors / wrappers / restatements of the vs code docs are discluded from this summary.
+
+## spec / generic
+Before diving in to codespaces and the vsc extension, it's worth highlighting some pieces of the spec, or at least, mentioning them here if they are implied but not specifically spelled out later. As well as some generic tips. In no particular order...
 
 ### `devcontainer.json` order of precedence
 There is an order in which different `devcontainer.json` files will be looked for to use, according to [this][spec devcontainer.json location]. To "quote" the spec:
@@ -56,6 +74,17 @@ There is an order in which different `devcontainer.json` files will be looked fo
 * 3rd is `<repo-root>/.devcontainer/<folder>/devcontainer.json` (where `<folder>` is a sub-folder, one level deep)
 
 You can use these various potential paths to include multiple different `devcontainer.json` configurations, with an order of precedence.
+
+### Set your `.gitattributes` to avoid false positive changes
+See this [`.gitattributes` line endings tip][`.gitattributes` line endings tip]. (Or the git docs on [gitattributes][gitattributes]).
+
+To prevent many false positive changes being committed and frequently rewriting files to swap line endings back and forth, you should ensure you set your `.gitattributes` file to normalise your file line endings in your index. A simple setup is a `.gitattributes` file of:
+```
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+```
+If you've just added this, you'll also want to run `git add --renormalize .` (see [this SO answer][SO: Normalise line endings]) and commit the renormalised line endings.
 
 ## GitHub Codespaces
 [Codespaces][codespaces] are best thought of as a service GitHub provides as a "layer of management" over the use of devcontainers in a repo, but it can be used without setting up or configuring any devcontainers, by way of a "default" devcontainer. While setting up initially, focussing solely on vsc and ignoring gh might offer a greater degree of freedom, but it would be easier to start from what features of devcontainers gh codespaces puts front and center, before branching out to see what other options exist.
@@ -110,6 +139,22 @@ If it's possible/reasonable for you to run a container from a base image that is
     * [`base-alpine`][base-alpine]
     * [`base-debian`][base-debian]
     * [`base-ubuntu`][base-ubuntu]
+* The `"hostRequirements"` option in the [devcontainer.json][devcontainer.json] can be configured for codespaces like [this][codespace hostRequirements].
 
 ## VS Code Extension
-The [vsc extension][vsc extension].
+The [vsc extension][vsc extension] is required for this section. It does a lot of the heavy lifting of suggesting different templates.
+### Recommend the extension to anyone opening your repo in vsc
+If you are adding devcontainers to a repo that you are setting up specifically for use in vsc, you can also "recommend" the extension to anyone via a JSONC file `<repo-root>/.vscode/extensions.json`:
+```jsonc
+{
+  "recommendations": [
+    "ms-vscode-remote.remote-containers",
+  ]
+}
+```
+### Getting started
+You can read the vsc overview "[Developing inside a Container][Developing inside a Container]".
+
+For this, we want to know how to see what possible configurations are either suggested or what we can add. Opening the command palette, `Dev Containers: Open Folder in Container...` would let us choose an existing already present config to use, but we can use `Dev Containers: Add Dev Container Configuration Files...` instead. If we do this we get a drop down list to choose from. If we pick `Show all templates...` and then `Learn more`, we get taken to the devcontainer site's own list of [templates][templates].
+### vsc misc
+* You can share your SSH and GPG keys with a local container. See [sharing-git-credentials][vsc sharing-git-credentials].
