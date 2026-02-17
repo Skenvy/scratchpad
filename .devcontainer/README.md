@@ -155,6 +155,50 @@ If you are adding devcontainers to a repo that you are setting up specifically f
 ### Getting started
 You can read the vsc overview "[Developing inside a Container][Developing inside a Container]".
 
-For this, we want to know how to see what possible configurations are either suggested or what we can add. Opening the command palette, `Dev Containers: Open Folder in Container...` would let us choose an existing already present config to use, but we can use `Dev Containers: Add Dev Container Configuration Files...` instead. If we do this we get a drop down list to choose from. If we pick `Show all templates...` and then `Learn more`, we get taken to the devcontainer site's own list of [templates][templates].
+For this, we want to know how to see what possible configurations are either suggested or what we can add. Opening the command palette, `Dev Containers: Open Folder in Container...` would let us choose an existing already present config to use, but we can use `Dev Containers: Add Dev Container Configuration Files...` instead. If we do this we get a drop down list to choose from. If we pick `Show all templates...` and then `Learn more`, we get taken to the devcontainer site's own list of [templates][templates], which mentions:
+> Templates listed here will be presented in the UX of [supporting tools][supported tools].
+
+As an example, you search for "universal" to see if it offers a template for the same default image as GitHub does, you'll see that there is an option called "Default Linux Universal" which creates the following `<repo-root>/.devcontainer/devcontainer.json` (ignoring the option to add features or configure dependabot):
+```jsonc
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/universal
+{
+	"name": "Default Linux Universal",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/universal:5-linux"
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "uname -a",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
+```
+If we try to use the option to `Dev Containers: Add Dev Container Configuration Files...` a second time, it will warn us that one already exists. If we continue we can set up a new one, and simply get the option to either overwrite the existing `<repo-root>/.devcontainer/devcontainer.json`, or skip. I can't seem to locate any way to get the template selector to suggest or imply that we have the option of adding a `devcontainer.json` inside a one folder deep nest inside the `<repo-root>/.devcontainer` folder, if we want to try and create more.
 ### vsc misc
 * You can share your SSH and GPG keys with a local container. See [sharing-git-credentials][vsc sharing-git-credentials].
+## We've tried both default bare setups, what next?
+We have tried both the GitHub and VS Code paths to setting up the default bare universal config, what now?
+
+So far we've been exposed to two methods of getting roughly the same result: a single `<repo-root>/.devcontainer/devcontainer.json` file that looks something like
+```jsonc
+{
+  "name": "<Some name>",
+  "image": "<some image>",
+  // Some comments, because this is JSONC.
+  // And some features object we are yet to use.
+  "features": {}
+}
+```
+The template we created in vsc had several more comments to suggest features to use, but at this point, we might need to keep a tab open on the reference page for [devcontainer.json][devcontainer.json] config.
+### Dockerfile / Docker-Compose
+We can see in the [devcontainer.json][devcontainer.json] that we can specify to build a `Dockerfile` or use a `compose.yaml` with multiple targets.
