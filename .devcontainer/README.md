@@ -37,6 +37,10 @@
 [gitattributes]: https://git-scm.com/docs/gitattributes
 [SO: sharing ssh wtih container]: https://stackoverflow.com/questions/75449081
 [SO: Normalise line endings]: https://stackoverflow.com/a/15646791/9960809
+[Pulling images from MCR is Slow]: https://github.com/microsoft/containerregistry/issues/35
+[devcontainers/spec issue 158]: https://github.com/devcontainers/spec/issues/158
+[devcontainers/spec discussion 285]: https://github.com/devcontainers/spec/discussions/285
+[microsoft/vscode issue 265651]: https://github.com/microsoft/vscode/issues/265651
 <!-- misc specific to this repo (or any one of my repos) -->
 [my dotfiles]: https://github.com/Skenvy/dotfiles/tree/main/.devcontainer
 [my `install.sh`]: https://github.com/Skenvy/dotfiles/blob/main/install.sh
@@ -215,8 +219,27 @@ We should first test that a `devcontainer.json` of the following allows SSH and 
 	"image": "mcr.microsoft.com/devcontainers/universal:5.1.4-noble"
 }
 ```
+Well, it took a whopping half an hour to download and unpack, see the issue "[Pulling images from MCR is Slow][Pulling images from MCR is Slow]", and it takes 14GB of RAM, but this line was written inside of the above `Universal` devcontainer.
+#### Uh oh!
+Unfortunately there seems to be an issue to work out! So, currently, it seems as if, in an effort to test [sharing-git-credentials][vsc sharing-git-credentials] for myself, just using this `Universal` devcontainer from Windows, that `ssh-add -l` is listing my ssh keys correctly, and `gpg --list-secret-keys --keyid-format=long` lists my gpg keys (albeit with the warning "gpg: problem with fast path key listing: forbidden - ignored"), but my git config is not populating!
+
+This issue is with regards to how I've currently set up my dotfiles to work through the integration with devcontainers in vsc.
+It appears that dotfiles are not managed through the spec at all, see [devcontainers/spec issue 158][devcontainers/spec issue 158] for mention that there is no plan (2023) to add dotfiles to the spec since they were added to the reference CLI.
+I'm not sure without researching further how the reference CLI hijacks the lifecycle steps, although, because it's just an implementation of the spec, it could reasonably implement lifecycle stages imbetween those referenced in the spec and use them itself.
+Which would appear to be the implication of that issue.
+As is also what a maintainer's answer on [devcontainers/spec discussion 285][devcontainers/spec discussion 285] suggests.
+
+There doesn't appear to be an easy way to resolve this without fundamentally changing my dotfile's approach to the global git config.
+* My dotfiles are setup in a way such that vsc settings on any OS will refer to themselves (as a link to the GitHub repo) as the dotfile repo to clone in to a devcontainer.
+* My dotfiles will run an install script that will populate home with all the files in the dotfiles repo, which currently includes a central global git config which sets up some settings but makes use of `[include]` directives to use settings set up locally per machine that are not checked in.
+* Creating a devcontainer with my dotfiles as they are currently, will copy my dotfiles repo's `.gitconfig` into the devcontainer home, and my `[include]`'d files will not end up in the devcontainer.
+* Deleting the `.gitconfig` from my dotfiles repo, will result in my local machine's global git config being copied in to the devcontainer.. but this is just a local copy of my dotfiles global git config!
+* Of course, if I no longer checked in my base global git config, there'd be no need for that to be what my local state stayed as.
+* So theoretically I could just accept that to make my dotfiles work with devcontainers, and enable the gitconfig being copied in to the devcontainer, I just need to fundamentally change my dotfiles approach to checking in my gitconfig? It wouldn't be the worst, other parts of it are READMEs on how to manage other config that isn't checked in, but it does feel not nice to take something out of it that every other tool has worked fine with.
+* Even though it would be _nice_ if devcontainers could fully resolve the global git config before passing it in to the devcontainer, or something like [microsoft/vscode issue 265651][microsoft/vscode issue 265651] was planned (which would allow me to attach mounts to the `[include]`'d files).
+* Unfortunately it seems to get a global gitconfig copied into the devcontainer correctly, it needs to not be copied as part of a devcontainer setup, _AND_ the copy of the global git config on your machine can't use `[include]`, because devcontainers wont resolve them and there's no method for a user to specify persistent personal mount paths.
 ### Base
-#### Ubunut
+#### Ubuntu
 #### Debian
 #### Alpine
 ### Dockerfile!
