@@ -6,6 +6,7 @@
 [devcontainer.json]: https://containers.dev/implementors/json_reference/
 [spec devcontainer.json location]: https://containers.dev/implementors/spec/#devcontainerjson
 [templates]: https://containers.dev/templates
+[features]: https://containers.dev/features
 <!-- codespaces -->
 [codespaces]: https://docs.github.com/en/codespaces
 [account codespaces]: https://github.com/codespaces
@@ -200,5 +201,22 @@ So far we've been exposed to two methods of getting roughly the same result: a s
 }
 ```
 The template we created in vsc had several more comments to suggest features to use, but at this point, we might need to keep a tab open on the reference page for [devcontainer.json][devcontainer.json] config.
+And keep [templates][templates] and [features][features] on hand to browse.
 ### Dockerfile / Docker-Compose
 We can see in the [devcontainer.json][devcontainer.json] that we can specify to build a `Dockerfile` or use a `compose.yaml` with multiple targets.
+## Test devcontainer SSH and GPG
+Although the article on [sharing-git-credentials][vsc sharing-git-credentials] suggests that it should be possible to use SSH and GPG keys to work _entirely_ inside a devcontainer, it is worth seeing this for ourselves, and test what is strictly required to enable this!
+### Universal
+We should first test that a `devcontainer.json` of the following allows SSH and GPG
+```json
+{
+	"name": "Universal",
+	// https://mcr.microsoft.com/en-us/artifact/mar/devcontainers/universal/about
+	"image": "mcr.microsoft.com/devcontainers/universal:5.1.4-noble"
+}
+```
+### Base
+#### Ubunut
+#### Debian
+#### Alpine
+### Dockerfile!
